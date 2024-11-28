@@ -96,31 +96,61 @@ void TIM4_IRQHandler(void){
 }
 
 void MyTimer_PWM_Init_Channel(TIM_TypeDef * Timer, char Channel){
-	if (Channel == '1'){
-		Timer->CCR1 |= TIM_CCR1_CCR1;
+	if (Channel == 1){
+		// 1. Activation du mode PWM 1 (110 = 0x6)
+		Timer->CCMR1 &= ~TIM_CCMR1_OC1M;
+		Timer->CCMR1 |= (0x6 << 4);
+
+		// 2. Activation du pré-chargement
+		// pour que la valeur stockée dans le registre OCR2 soit prédominante lors du prochain cycle de comparaiso
+		// entre le signal de référence de la PWM et le signal de commande de la PWM
+		Timer->CCMR1 |= TIM_CCMR1_OC1PE;
+		
+		// 3. Activation de la capture/comparaison
+		Timer->CCER |= TIM_CCER_CC1E;
+		
+		//Timer->CCR1 |= TIM_CCR1_CCR1;
 	}
-	if (Channel == '2'){
-		Timer->CCR2 |= TIM_CCR2_CCR2;
+	if (Channel == 2){
+		// Idem.
+		Timer->CCMR1 &= ~TIM_CCMR1_OC2M;
+		Timer->CCMR1 |= (0x6 << 12);
+		Timer->CCMR1 |= TIM_CCMR1_OC2PE;
+		Timer->CCER |= TIM_CCER_CC2E;
+		//Timer->CCR2 |= TIM_CCR2_CCR2;
 	}
-	if (Channel == '3'){
-		Timer->CCR3 |= TIM_CCR3_CCR3;
+	if (Channel == 3){
+		// Idem.
+		Timer->CCMR2 &= ~TIM_CCMR2_OC3M;
+		Timer->CCMR2 |= (0x6 << 4);
+		Timer->CCMR2 |= TIM_CCMR2_OC3PE;
+		Timer->CCER |= TIM_CCER_CC3E;
+		//Timer->CCR3 |= TIM_CCR3_CCR3;
 	}
-	if (Channel == '4'){
-		Timer->CCR4 |= TIM_CCR4_CCR4;
+	if (Channel == 4){
+		// Idem.
+		Timer->CCMR2 &= ~TIM_CCMR2_OC4M;
+		Timer->CCMR2 |= (0x6 << 12);
+		Timer->CCMR2 |= TIM_CCMR2_OC4PE;
+		Timer->CCER |= TIM_CCER_CC4E;
+		//Timer->CCR4 |= TIM_CCR4_CCR4;
 	}
 }
 
 void MyTimer_PWM_Set_Rapport_Cyclique(TIM_TypeDef * Timer, char Channel, int Rapport_Cyclique){
-	if (Channel == '1'){
-		Timer->CCR1 = Rapport_Cyclique * (1+Timer->ARR) / 100;
+	
+	int R = Rapport_Cyclique * (1+Timer->ARR) / 100;
+	
+	if (Channel == 1){
+		Timer->CCR1 = R;
 	}
-	if (Channel == '2'){
-		Timer->CCR2 = Rapport_Cyclique * (1+Timer->ARR) / 100;
+	if (Channel == 2){
+		Timer->CCR2 = R;
 	}
-	if (Channel == '3'){
-		Timer->CCR3 = Rapport_Cyclique * (1+Timer->ARR) / 100;
+	if (Channel == 3){
+		Timer->CCR3 = R;
 	}
-	if (Channel == '4'){
-		Timer->CCR4 = Rapport_Cyclique * (1+Timer->ARR) / 100;
+	if (Channel == 4){
+		Timer->CCR4 = R;
 	}
 }

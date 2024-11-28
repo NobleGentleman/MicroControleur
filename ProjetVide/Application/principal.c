@@ -44,12 +44,12 @@ int main ( void )
 	*/
 	
 	
-	MyTimer_Struct_TypeDef Timer500ms;
-	Timer500ms.ARR = 1000-1;
-	Timer500ms.PSC = 36000-1;
+	MyTimer_Struct_TypeDef Timer500ms_IT;
+	Timer500ms_IT.ARR = 1000-1;
+	Timer500ms_IT.PSC = 36000-1;
 	
-	Timer500ms.Timer = TIM1;
-	MyTimer_Base_Init(&Timer500ms);
+	Timer500ms_IT.Timer = TIM1;
+	MyTimer_Base_Init(&Timer500ms_IT);
 	MyTimer_Base_Start(TIM1);
 	MyTimer_ActiveIT(TIM1,2,Callback);
 	
@@ -91,23 +91,23 @@ int main ( void )
 	Donc R = 2	
 	*/
 	
-	MyTimer_Struct_TypeDef Timer10us;
-	Timer10us.ARR = 10-1;
-	Timer10us.PSC = 72-1;
+	MyTimer_Struct_TypeDef Timer10us_PWM;
+	Timer10us_PWM.ARR = 10-1;
+	Timer10us_PWM.PSC = 72-1;
 	
-	Timer10us.Timer = TIM2;
-	MyTimer_Base_Init(&Timer10us);
+	Timer10us_PWM.Timer = TIM2;
+	MyTimer_Base_Init(&Timer10us_PWM);
 	MyTimer_Base_Start(TIM2);
 	MyTimer_PWM_Init_Channel(TIM2,2);
 	MyTimer_PWM_Set_Rapport_Cyclique(TIM2,2,20);
 	
 	ourGPIO_struct mon_GPIO;
-	mon_GPIO.GPIO = Gir_Idx_GPIO;
-	mon_GPIO.GPIO_pin = Gir_Idx_Pin;
+	mon_GPIO.GPIO = GPIO_Timer_PWM;
+	mon_GPIO.GPIO_pin = Pin_Timer_PWM;
 	mon_GPIO.GPIO_conf = altOut_Ppull;
 	ourGPIO_Init(&mon_GPIO);
-	//ourGPIO_Set(&mon_GPIO,Gir_Idx_Pin);
-	//int test = ourGPIO_Read(&mon_GPIO,Gir_Idx_Pin);
+	//ourGPIO_Set(&mon_GPIO,Pin_Timer_PWM);
+	//int test = ourGPIO_Read(&mon_GPIO,Pin_Timer_PWM);
 	
 	while (1)
 	{

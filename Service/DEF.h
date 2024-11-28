@@ -1,2 +1,2 @@
-#define Gir_Idx_GPIO GPIOA
-#define Gir_Idx_Pin 1 // PA1
+#define GPIO_Timer_PWM GPIOA
+#define Pin_Timer_PWM 1 // PA1

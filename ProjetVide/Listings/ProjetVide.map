@@ -11,8 +11,6 @@ Section Cross References
     principal.o(.text.main) refers to timer.o(.text.MyTimer_PWM_Init_Channel) for MyTimer_PWM_Init_Channel
     principal.o(.text.main) refers to timer.o(.text.MyTimer_PWM_Set_Rapport_Cyclique) for MyTimer_PWM_Set_Rapport_Cyclique
     principal.o(.text.main) refers to gpio.o(.text.ourGPIO_Init) for ourGPIO_Init
-    principal.o(.text.main) refers to gpio.o(.text.ourGPIO_Set) for ourGPIO_Set
-    principal.o(.text.main) refers to gpio.o(.text.ourGPIO_Read) for ourGPIO_Read
     principal.o(.ARM.exidx.text.main) refers to principal.o(.text.main) for [Anonymous Symbol]
     gpio.o(.ARM.exidx.text.ourGPIO_Init) refers to gpio.o(.text.ourGPIO_Init) for [Anonymous Symbol]
     gpio.o(.ARM.exidx.text.ourGPIO_Read) refers to gpio.o(.text.ourGPIO_Read) for [Anonymous Symbol]
@@ -178,7 +176,9 @@ Removing Unused input sections from the image.
     Removing principal.o(.ARM.use_no_argv), (4 bytes).
     Removing gpio.o(.text), (0 bytes).
     Removing gpio.o(.ARM.exidx.text.ourGPIO_Init), (8 bytes).
+    Removing gpio.o(.text.ourGPIO_Read), (44 bytes).
     Removing gpio.o(.ARM.exidx.text.ourGPIO_Read), (8 bytes).
+    Removing gpio.o(.text.ourGPIO_Set), (32 bytes).
     Removing gpio.o(.ARM.exidx.text.ourGPIO_Set), (8 bytes).
     Removing gpio.o(.text.ourGPIO_Reset), (32 bytes).
     Removing gpio.o(.ARM.exidx.text.ourGPIO_Reset), (8 bytes).
@@ -204,7 +204,7 @@ Removing Unused input sections from the image.
     Removing system_stm32f10x.o(.data.SystemCoreClock), (4 bytes).
     Removing system_stm32f10x.o(.rodata.AHBPrescTable), (16 bytes).
 
-31 unused section(s) (total 546 bytes) removed from the image.
+33 unused section(s) (total 622 bytes) removed from the image.
 
 ==============================================================================
 
@@ -330,24 +330,22 @@ Image Symbol Table
     [Anonymous Symbol]                       0x08000268   Section        0  timer.o(.text.MyTimer_ActiveIT)
     [Anonymous Symbol]                       0x08000344   Section        0  timer.o(.text.MyTimer_Base_Init)
     [Anonymous Symbol]                       0x080003f0   Section        0  timer.o(.text.MyTimer_PWM_Init_Channel)
-    [Anonymous Symbol]                       0x08000458   Section        0  timer.o(.text.MyTimer_PWM_Set_Rapport_Cyclique)
-    SetSysClock                              0x08000519   Thumb Code     8  system_stm32f10x.o(.text.SetSysClock)
-    [Anonymous Symbol]                       0x08000518   Section        0  system_stm32f10x.o(.text.SetSysClock)
-    SetSysClockTo72                          0x08000521   Thumb Code   290  system_stm32f10x.o(.text.SetSysClockTo72)
-    [Anonymous Symbol]                       0x08000520   Section        0  system_stm32f10x.o(.text.SetSysClockTo72)
-    [Anonymous Symbol]                       0x08000644   Section        0  system_stm32f10x.o(.text.SystemInit)
-    [Anonymous Symbol]                       0x080006ac   Section        0  timer.o(.text.TIM1_UP_IRQHandler)
-    [Anonymous Symbol]                       0x080006e0   Section        0  timer.o(.text.TIM2_IRQHandler)
-    [Anonymous Symbol]                       0x08000710   Section        0  timer.o(.text.TIM3_IRQHandler)
-    [Anonymous Symbol]                       0x08000744   Section        0  timer.o(.text.TIM4_IRQHandler)
-    __NVIC_EnableIRQ                         0x08000779   Thumb Code    48  timer.o(.text.__NVIC_EnableIRQ)
-    [Anonymous Symbol]                       0x08000778   Section        0  timer.o(.text.__NVIC_EnableIRQ)
-    __NVIC_SetPriority                       0x080007a9   Thumb Code    66  timer.o(.text.__NVIC_SetPriority)
-    [Anonymous Symbol]                       0x080007a8   Section        0  timer.o(.text.__NVIC_SetPriority)
-    [Anonymous Symbol]                       0x080007ec   Section        0  principal.o(.text.main)
-    [Anonymous Symbol]                       0x0800089c   Section        0  gpio.o(.text.ourGPIO_Init)
-    [Anonymous Symbol]                       0x080009e0   Section        0  gpio.o(.text.ourGPIO_Read)
-    [Anonymous Symbol]                       0x08000a0c   Section        0  gpio.o(.text.ourGPIO_Set)
+    [Anonymous Symbol]                       0x080004cc   Section        0  timer.o(.text.MyTimer_PWM_Set_Rapport_Cyclique)
+    SetSysClock                              0x08000545   Thumb Code     8  system_stm32f10x.o(.text.SetSysClock)
+    [Anonymous Symbol]                       0x08000544   Section        0  system_stm32f10x.o(.text.SetSysClock)
+    SetSysClockTo72                          0x0800054d   Thumb Code   290  system_stm32f10x.o(.text.SetSysClockTo72)
+    [Anonymous Symbol]                       0x0800054c   Section        0  system_stm32f10x.o(.text.SetSysClockTo72)
+    [Anonymous Symbol]                       0x08000670   Section        0  system_stm32f10x.o(.text.SystemInit)
+    [Anonymous Symbol]                       0x080006d8   Section        0  timer.o(.text.TIM1_UP_IRQHandler)
+    [Anonymous Symbol]                       0x0800070c   Section        0  timer.o(.text.TIM2_IRQHandler)
+    [Anonymous Symbol]                       0x0800073c   Section        0  timer.o(.text.TIM3_IRQHandler)
+    [Anonymous Symbol]                       0x08000770   Section        0  timer.o(.text.TIM4_IRQHandler)
+    __NVIC_EnableIRQ                         0x080007a5   Thumb Code    48  timer.o(.text.__NVIC_EnableIRQ)
+    [Anonymous Symbol]                       0x080007a4   Section        0  timer.o(.text.__NVIC_EnableIRQ)
+    __NVIC_SetPriority                       0x080007d5   Thumb Code    66  timer.o(.text.__NVIC_SetPriority)
+    [Anonymous Symbol]                       0x080007d4   Section        0  timer.o(.text.__NVIC_SetPriority)
+    [Anonymous Symbol]                       0x08000818   Section        0  principal.o(.text.main)
+    [Anonymous Symbol]                       0x080008b4   Section        0  gpio.o(.text.ourGPIO_Init)
     .bss                                     0x20000000   Section       96  libspace.o(.bss)
     Heap_Mem                                 0x20000070   Data         512  startup_stm32f10x_md.o(HEAP)
     HEAP                                     0x20000070   Section      512  startup_stm32f10x_md.o(HEAP)
@@ -507,19 +505,17 @@ Image Symbol Table
     Callback                                 0x08000255   Thumb Code    18  principal.o(.text.Callback)
     MyTimer_ActiveIT                         0x08000269   Thumb Code   218  timer.o(.text.MyTimer_ActiveIT)
     MyTimer_Base_Init                        0x08000345   Thumb Code   170  timer.o(.text.MyTimer_Base_Init)
-    MyTimer_PWM_Init_Channel                 0x080003f1   Thumb Code   104  timer.o(.text.MyTimer_PWM_Init_Channel)
-    MyTimer_PWM_Set_Rapport_Cyclique         0x08000459   Thumb Code   192  timer.o(.text.MyTimer_PWM_Set_Rapport_Cyclique)
-    SystemInit                               0x08000645   Thumb Code   102  system_stm32f10x.o(.text.SystemInit)
-    TIM1_UP_IRQHandler                       0x080006ad   Thumb Code    50  timer.o(.text.TIM1_UP_IRQHandler)
-    TIM2_IRQHandler                          0x080006e1   Thumb Code    46  timer.o(.text.TIM2_IRQHandler)
-    TIM3_IRQHandler                          0x08000711   Thumb Code    50  timer.o(.text.TIM3_IRQHandler)
-    TIM4_IRQHandler                          0x08000745   Thumb Code    50  timer.o(.text.TIM4_IRQHandler)
-    main                                     0x080007ed   Thumb Code   176  principal.o(.text.main)
-    ourGPIO_Init                             0x0800089d   Thumb Code   322  gpio.o(.text.ourGPIO_Init)
-    ourGPIO_Read                             0x080009e1   Thumb Code    44  gpio.o(.text.ourGPIO_Read)
-    ourGPIO_Set                              0x08000a0d   Thumb Code    32  gpio.o(.text.ourGPIO_Set)
-    Region$$Table$$Base                      0x08000a2c   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x08000a3c   Number         0  anon$$obj.o(Region$$Table)
+    MyTimer_PWM_Init_Channel                 0x080003f1   Thumb Code   220  timer.o(.text.MyTimer_PWM_Init_Channel)
+    MyTimer_PWM_Set_Rapport_Cyclique         0x080004cd   Thumb Code   118  timer.o(.text.MyTimer_PWM_Set_Rapport_Cyclique)
+    SystemInit                               0x08000671   Thumb Code   102  system_stm32f10x.o(.text.SystemInit)
+    TIM1_UP_IRQHandler                       0x080006d9   Thumb Code    50  timer.o(.text.TIM1_UP_IRQHandler)
+    TIM2_IRQHandler                          0x0800070d   Thumb Code    46  timer.o(.text.TIM2_IRQHandler)
+    TIM3_IRQHandler                          0x0800073d   Thumb Code    50  timer.o(.text.TIM3_IRQHandler)
+    TIM4_IRQHandler                          0x08000771   Thumb Code    50  timer.o(.text.TIM4_IRQHandler)
+    main                                     0x08000819   Thumb Code   154  principal.o(.text.main)
+    ourGPIO_Init                             0x080008b5   Thumb Code   382  gpio.o(.text.ourGPIO_Init)
+    Region$$Table$$Base                      0x08000a34   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x08000a44   Number         0  anon$$obj.o(Region$$Table)
     __libspace_start                         0x20000000   Data          96  libspace.o(.bss)
     PTF1                                     0x20000060   Data           4  timer.o(.bss.PTF1)
     __temporary_stack_top$libspace           0x20000060   Data           0  libspace.o(.bss)
@@ -535,9 +531,9 @@ Memory Map of the image
 
   Image Entry point : 0x08000199
 
-  Load Region LR_1 (Base: 0x08000000, Size: 0x00000a3c, Max: 0xffffffff, ABSOLUTE)
+  Load Region LR_1 (Base: 0x08000000, Size: 0x00000a44, Max: 0xffffffff, ABSOLUTE)
 
-    Execution Region ER_RO (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00000a3c, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RO (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00000a44, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -606,38 +602,38 @@ Memory Map of the image
     0x08000342   0x08000342   0x00000002   PAD
     0x08000344   0x08000344   0x000000aa   Code   RO           31    .text.MyTimer_Base_Init  timer.o
     0x080003ee   0x080003ee   0x00000002   PAD
-    0x080003f0   0x080003f0   0x00000068   Code   RO           47    .text.MyTimer_PWM_Init_Channel  timer.o
-    0x08000458   0x08000458   0x000000c0   Code   RO           49    .text.MyTimer_PWM_Set_Rapport_Cyclique  timer.o
-    0x08000518   0x08000518   0x00000008   Code   RO           73    .text.SetSysClock   system_stm32f10x.o
-    0x08000520   0x08000520   0x00000122   Code   RO           77    .text.SetSysClockTo72  system_stm32f10x.o
-    0x08000642   0x08000642   0x00000002   PAD
-    0x08000644   0x08000644   0x00000066   Code   RO           71    .text.SystemInit    system_stm32f10x.o
-    0x080006aa   0x080006aa   0x00000002   PAD
-    0x080006ac   0x080006ac   0x00000032   Code   RO           39    .text.TIM1_UP_IRQHandler  timer.o
-    0x080006de   0x080006de   0x00000002   PAD
-    0x080006e0   0x080006e0   0x0000002e   Code   RO           41    .text.TIM2_IRQHandler  timer.o
-    0x0800070e   0x0800070e   0x00000002   PAD
-    0x08000710   0x08000710   0x00000032   Code   RO           43    .text.TIM3_IRQHandler  timer.o
-    0x08000742   0x08000742   0x00000002   PAD
-    0x08000744   0x08000744   0x00000032   Code   RO           45    .text.TIM4_IRQHandler  timer.o
-    0x08000776   0x08000776   0x00000002   PAD
-    0x08000778   0x08000778   0x00000030   Code   RO           35    .text.__NVIC_EnableIRQ  timer.o
-    0x080007a8   0x080007a8   0x00000042   Code   RO           37    .text.__NVIC_SetPriority  timer.o
-    0x080007ea   0x080007ea   0x00000002   PAD
-    0x080007ec   0x080007ec   0x000000b0   Code   RO            4    .text.main          principal.o
-    0x0800089c   0x0800089c   0x00000142   Code   RO           14    .text.ourGPIO_Init  gpio.o
-    0x080009de   0x080009de   0x00000002   PAD
-    0x080009e0   0x080009e0   0x0000002c   Code   RO           16    .text.ourGPIO_Read  gpio.o
-    0x08000a0c   0x08000a0c   0x00000020   Code   RO           18    .text.ourGPIO_Set   gpio.o
-    0x08000a2c   0x08000a2c   0x00000010   Data   RO          255    Region$$Table       anon$$obj.o
+    0x080003f0   0x080003f0   0x000000dc   Code   RO           47    .text.MyTimer_PWM_Init_Channel  timer.o
+    0x080004cc   0x080004cc   0x00000076   Code   RO           49    .text.MyTimer_PWM_Set_Rapport_Cyclique  timer.o
+    0x08000542   0x08000542   0x00000002   PAD
+    0x08000544   0x08000544   0x00000008   Code   RO           73    .text.SetSysClock   system_stm32f10x.o
+    0x0800054c   0x0800054c   0x00000122   Code   RO           77    .text.SetSysClockTo72  system_stm32f10x.o
+    0x0800066e   0x0800066e   0x00000002   PAD
+    0x08000670   0x08000670   0x00000066   Code   RO           71    .text.SystemInit    system_stm32f10x.o
+    0x080006d6   0x080006d6   0x00000002   PAD
+    0x080006d8   0x080006d8   0x00000032   Code   RO           39    .text.TIM1_UP_IRQHandler  timer.o
+    0x0800070a   0x0800070a   0x00000002   PAD
+    0x0800070c   0x0800070c   0x0000002e   Code   RO           41    .text.TIM2_IRQHandler  timer.o
+    0x0800073a   0x0800073a   0x00000002   PAD
+    0x0800073c   0x0800073c   0x00000032   Code   RO           43    .text.TIM3_IRQHandler  timer.o
+    0x0800076e   0x0800076e   0x00000002   PAD
+    0x08000770   0x08000770   0x00000032   Code   RO           45    .text.TIM4_IRQHandler  timer.o
+    0x080007a2   0x080007a2   0x00000002   PAD
+    0x080007a4   0x080007a4   0x00000030   Code   RO           35    .text.__NVIC_EnableIRQ  timer.o
+    0x080007d4   0x080007d4   0x00000042   Code   RO           37    .text.__NVIC_SetPriority  timer.o
+    0x08000816   0x08000816   0x00000002   PAD
+    0x08000818   0x08000818   0x0000009a   Code   RO            4    .text.main          principal.o
+    0x080008b2   0x080008b2   0x00000002   PAD
+    0x080008b4   0x080008b4   0x0000017e   Code   RO           14    .text.ourGPIO_Init  gpio.o
+    0x08000a32   0x08000a32   0x00000002   PAD
+    0x08000a34   0x08000a34   0x00000010   Data   RO          255    Region$$Table       anon$$obj.o
 
 
-    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x08000a3c, Size: 0x00000000, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x08000a44, Size: 0x00000000, Max: 0xffffffff, ABSOLUTE)
 
     **** No section assigned to this execution region ****
 
 
-    Execution Region ER_ZI (Exec base: 0x20000000, Load base: 0x08000a3c, Size: 0x00000670, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_ZI (Exec base: 0x20000000, Load base: 0x08000a44, Size: 0x00000670, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -657,16 +653,16 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-       398          0          0          0          0       2059   gpio.o
-       194          0          0          0          0       2237   principal.o
+       382          0          0          0          0       2115   gpio.o
+       172          0          0          0          0       2207   principal.o
         64         26        236          0       1536        836   startup_stm32f10x_md.o
        400          0          0          0          0       2960   system_stm32f10x.o
-       994          0          0          0         16       5946   timer.o
+      1036          0          0          0         16       6034   timer.o
 
     ----------------------------------------------------------------------
-      2072         26        252          0       1552      14038   Object Totals
+      2080         26        252          0       1552      14152   Object Totals
          0          0         16          0          0          0   (incl. Generated)
-        22          0          0          0          0          0   (incl. Padding)
+        26          0          0          0          0          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -712,15 +708,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      2368         42        252          0       1648      14454   Grand Totals
-      2368         42        252          0       1648      14454   ELF Image Totals
-      2368         42        252          0          0          0   ROM Totals
+      2376         42        252          0       1648      14568   Grand Totals
+      2376         42        252          0       1648      14568   ELF Image Totals
+      2376         42        252          0          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 2620 (   2.56kB)
+    Total RO  Size (Code + RO Data)                 2628 (   2.57kB)
     Total RW  Size (RW Data + ZI Data)              1648 (   1.61kB)
-    Total ROM Size (Code + RO Data + RW Data)       2620 (   2.56kB)
+    Total ROM Size (Code + RO Data + RW Data)       2628 (   2.57kB)
 
 ==============================================================================
 
