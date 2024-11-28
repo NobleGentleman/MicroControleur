@@ -18,11 +18,11 @@ void ourGPIO_Init( ourGPIO_struct * GPIOStructPtr){
 
 		if(conf == 0x15) {
 			conf = 0x08;
-			//GPIOStructPtr->GPIO->ODR |= (0x01 << pin);
+			GPIOStructPtr->GPIO->ODR |= (0x01 << pin);
 		}
-		//else {
-		//	GPIOStructPtr->GPIO->ODR |= (0x00 << pin);			
-		//}
+		else {
+			GPIOStructPtr->GPIO->ODR |= (0x00 << pin);			
+		}
 		// Configuration du registre ODR pour le pin correspondant (cf. Tableau 20)
 		
 		GPIOStructPtr->GPIO->CRL |= (conf <<  4 * pin);
@@ -38,11 +38,11 @@ void ourGPIO_Init( ourGPIO_struct * GPIOStructPtr){
 
 		if(conf == 0x15) {
 			conf = 0x08;
-			//GPIOStructPtr->GPIO->ODR |= (0x01 << pin);
+			GPIOStructPtr->GPIO->ODR |= (0x01 << pin);
 		}
-		//else {
-		//	GPIOStructPtr->GPIO->ODR |= (0x00 << pin);			
-		//}
+		else {
+			GPIOStructPtr->GPIO->ODR |= (0x00 << pin);			
+		}
 		// Configuration du registre ODR pour le pin correspondant (cf. Tableau 20)
 		
 		GPIOStructPtr->GPIO->CRH |= (conf <<  4 * (pin - 8));

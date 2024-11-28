@@ -106,8 +106,8 @@ int main ( void )
 	mon_GPIO.GPIO_pin = Gir_Idx_Pin;
 	mon_GPIO.GPIO_conf = altOut_Ppull;
 	ourGPIO_Init(&mon_GPIO);
-	ourGPIO_Set(&mon_GPIO,Gir_Idx_Pin);
-	int test = ourGPIO_Read(&mon_GPIO,Gir_Idx_Pin);
+	//ourGPIO_Set(&mon_GPIO,Gir_Idx_Pin);
+	//int test = ourGPIO_Read(&mon_GPIO,Gir_Idx_Pin);
 	
 	while (1)
 	{
