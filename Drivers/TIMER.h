@@ -10,7 +10,7 @@ typedef struct {
 } MyTimer_Struct_TypeDef;
 // Structure contenant un Timer et les valeurs entières respectives que l'on affecte aux registres ARR et PSC
 
-void MyTimer_Base_Init(MyTimer_Struct_TypeDef * Timer);
+void MyTimer_Base_Init(MyTimer_Struct_TypeDef * TimIN);
 // Initialisation d'un Timer donné
 
 void MyTimer_ActiveIT ( TIM_TypeDef * Timer, char Prio, void ( * IT_function ) (void));

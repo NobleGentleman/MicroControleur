@@ -404,15 +404,20 @@
               <FileType>1</FileType>
               <FilePath>..\Drivers\TIMER.c</FilePath>
             </File>
+            <File>
+              <FileName>ADC.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\ADC.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>Service</GroupName>
           <Files>
             <File>
-              <FileName>DEF.h</FileName>
+              <FileName>DEFINE.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Service\DEF.h</FilePath>
+              <FilePath>..\Service\DEFINE.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -822,15 +827,20 @@
               <FileType>1</FileType>
               <FilePath>..\Drivers\TIMER.c</FilePath>
             </File>
+            <File>
+              <FileName>ADC.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\ADC.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>Service</GroupName>
           <Files>
             <File>
-              <FileName>DEF.h</FileName>
+              <FileName>DEFINE.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Service\DEF.h</FilePath>
+              <FilePath>..\Service\DEFINE.h</FilePath>
             </File>
           </Files>
         </Group>

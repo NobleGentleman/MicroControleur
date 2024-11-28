@@ -13,7 +13,7 @@ typedef struct{
 #define in_PullDown 0x08
 #define in_PullUp 0x15
 // Tableau 20 : Les modes de configuration Input pull-down et Input pull-up
-// correspondent tous les deux à l'entier 1000 (chaque bit étant
+// correspondent tous les deux à l'entier 0b1000 (chaque bit étant
 // respectivement affecté aux registres : CNF1, CNF0, MODE1, MODE0),
 // on met donc temporairement Pull-up à 15 et on le configurera correctement (à 8)
 // lorsque l'on en aura besoin. La différence entre Pull-down et Pull-up 
