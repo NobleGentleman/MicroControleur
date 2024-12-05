@@ -44,7 +44,7 @@ void MyTimer_Base_Init(MyTimer_Struct_TypeDef * TimIN){
 	TimIN->Timer->PSC |= TimIN->PSC;
 }
 
-void MyTimer_ActiveIT (TIM_TypeDef * Timer, char Prio, void ( * IT_function ) (void)){
+void MyTimer_ActiveIT(TIM_TypeDef * Timer, char Prio, void ( * IT_function ) (void)){
 	
 	Timer->DIER |= TIM_DIER_UIE;
 	
@@ -64,7 +64,7 @@ void MyTimer_ActiveIT (TIM_TypeDef * Timer, char Prio, void ( * IT_function ) (v
 		PTF4 = IT_function;
 		NVIC_EnableIRQ(TIM4_IRQn); // Autoriser la prise en compte de l'interruption
 		NVIC_SetPriority(TIM4_IRQn,Prio);
-	} 
+	}
 }
 
 void TIM1_UP_IRQHandler(void){

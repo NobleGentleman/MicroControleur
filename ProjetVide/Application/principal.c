@@ -2,7 +2,9 @@
 #include "../Drivers/GPIO.h"
 #include "../Drivers/TIMER.h"
 #include "../Drivers/ADC.h"
-#include "../Service/DEFINE.h"
+
+#include "../Services/TIMER_PWM.h"
+#include "../Services/ADC_TEST.h"
 
 /*
 
