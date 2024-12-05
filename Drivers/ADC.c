@@ -11,7 +11,7 @@ void ourADC_Init(ourADC_struct * ADCStructPtr){
 	// "The ADC input clock is generated from the PCLK2 clock divided by a prescaler and it must not exceed 14 MHz"
 	RCC->CFGR &= ~(RCC_CFGR_ADCPRE);
 	RCC->CFGR |= RCC_CFGR_ADCPRE_DIV6;
-	//RCC->CFGR &= ~(0x3 << 14); // 0x2 = 0b11
+	//RCC->CFGR &= ~(0x3 << 14); // 0x3 = 0b11
 	//RCC->CFGR |= (0x2 << 14); // 0x2 = 0b10 : PCLK2 divided by 6
 	
 	// 2. Permission donnée à l'ADC de démarrer la conversion analogique-numérique
@@ -34,7 +34,25 @@ void ourADC_Init(ourADC_struct * ADCStructPtr){
 	//ADCStructPtr->ADC->SQR3 &= ~(0x1F << 10); // 0x1F = 0b11111
 	//ADCStructPtr->ADC->SQR3 |= (channel << 10); // Configuration sur les bits SQ3 : 3rd conversion in regular sequence
 	
+	// 5. Configuration de l'ADC en mode non-continu
+	// Mode continu : l'ADC échantillonne le signal (fait des conversions) de manière constante, sans interruption
+	ADCStructPtr->ADC->CR2 &= ~ADC_CR2_CONT;
+	// ADCStructPtr->ADC->CR2 &= ~(0x01 << 1);
 	
+	// 6. Activation de la calibration de l'ADC
+	ADCStructPtr->ADC->CR2 |= ADC_CR2_CAL;
+	//ADCStructPtr->ADC->CR2 &= ~(0x01 << 2);
+	//ADCStructPtr->ADC->CR2 |= (0x01 << 2);
+	while (ADCStructPtr->ADC->CR2 & ADC_CR2_CAL);
+	//while (ADCStructPtr->ADC->CR2 & (0x01 << 2));
+	
+	// 7. Activation du déclenchement externe (de la conversion en cas d'événement externe) pour les canaux réguliers
+	ADCStructPtr->ADC->CR2 |= ADC_CR2_EXTTRIG;
+	
+	// 8. Démarrage de la conversion d'un groupe de canaux réguliers
+	ADCStructPtr->ADC->CR2 |= ADC_CR2_EXTSEL;
+	//ADCStructPtr->ADC->CR2 &= ~(0x07 << 17);
+	//ADCStructPtr->ADC->CR2 |= (0x07 << 17);
 }
 
 void ourADC_Start(ourADC_struct * ADCStructPtr){

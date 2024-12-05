@@ -11,6 +11,8 @@ Section Cross References
     principal.o(.text.main) refers to timer.o(.text.MyTimer_PWM_Init_Channel) for MyTimer_PWM_Init_Channel
     principal.o(.text.main) refers to timer.o(.text.MyTimer_PWM_Set_Rapport_Cyclique) for MyTimer_PWM_Set_Rapport_Cyclique
     principal.o(.text.main) refers to gpio.o(.text.ourGPIO_Init) for ourGPIO_Init
+    principal.o(.text.main) refers to adc.o(.text.ourADC_Init) for ourADC_Init
+    principal.o(.text.main) refers to adc.o(.text.ourADC_Start) for ourADC_Start
     principal.o(.ARM.exidx.text.main) refers to principal.o(.text.main) for [Anonymous Symbol]
     gpio.o(.ARM.exidx.text.ourGPIO_Init) refers to gpio.o(.text.ourGPIO_Init) for [Anonymous Symbol]
     gpio.o(.ARM.exidx.text.ourGPIO_Read) refers to gpio.o(.text.ourGPIO_Read) for [Anonymous Symbol]
@@ -198,9 +200,7 @@ Removing Unused input sections from the image.
     Removing timer.o(.ARM.exidx.text.MyTimer_PWM_Init_Channel), (8 bytes).
     Removing timer.o(.ARM.exidx.text.MyTimer_PWM_Set_Rapport_Cyclique), (8 bytes).
     Removing adc.o(.text), (0 bytes).
-    Removing adc.o(.text.ourADC_Init), (262 bytes).
     Removing adc.o(.ARM.exidx.text.ourADC_Init), (8 bytes).
-    Removing adc.o(.text.ourADC_Start), (38 bytes).
     Removing adc.o(.ARM.exidx.text.ourADC_Start), (8 bytes).
     Removing system_stm32f10x.o(.text), (0 bytes).
     Removing system_stm32f10x.o(.ARM.exidx.text.SystemInit), (8 bytes).
@@ -211,7 +211,7 @@ Removing Unused input sections from the image.
     Removing system_stm32f10x.o(.data.SystemCoreClock), (4 bytes).
     Removing system_stm32f10x.o(.rodata.AHBPrescTable), (16 bytes).
 
-38 unused section(s) (total 938 bytes) removed from the image.
+36 unused section(s) (total 638 bytes) removed from the image.
 
 ==============================================================================
 
@@ -353,7 +353,9 @@ Image Symbol Table
     __NVIC_SetPriority                       0x080007d5   Thumb Code    66  timer.o(.text.__NVIC_SetPriority)
     [Anonymous Symbol]                       0x080007d4   Section        0  timer.o(.text.__NVIC_SetPriority)
     [Anonymous Symbol]                       0x08000818   Section        0  principal.o(.text.main)
-    [Anonymous Symbol]                       0x080008b4   Section        0  gpio.o(.text.ourGPIO_Init)
+    [Anonymous Symbol]                       0x080008d8   Section        0  adc.o(.text.ourADC_Init)
+    [Anonymous Symbol]                       0x08000a20   Section        0  adc.o(.text.ourADC_Start)
+    [Anonymous Symbol]                       0x08000a48   Section        0  gpio.o(.text.ourGPIO_Init)
     .bss                                     0x20000000   Section       96  libspace.o(.bss)
     Heap_Mem                                 0x20000070   Data         512  startup_stm32f10x_md.o(HEAP)
     HEAP                                     0x20000070   Section      512  startup_stm32f10x_md.o(HEAP)
@@ -520,10 +522,12 @@ Image Symbol Table
     TIM2_IRQHandler                          0x0800070d   Thumb Code    46  timer.o(.text.TIM2_IRQHandler)
     TIM3_IRQHandler                          0x0800073d   Thumb Code    50  timer.o(.text.TIM3_IRQHandler)
     TIM4_IRQHandler                          0x08000771   Thumb Code    50  timer.o(.text.TIM4_IRQHandler)
-    main                                     0x08000819   Thumb Code   154  principal.o(.text.main)
-    ourGPIO_Init                             0x080008b5   Thumb Code   382  gpio.o(.text.ourGPIO_Init)
-    Region$$Table$$Base                      0x08000a34   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x08000a44   Number         0  anon$$obj.o(Region$$Table)
+    main                                     0x08000819   Thumb Code   190  principal.o(.text.main)
+    ourADC_Init                              0x080008d9   Thumb Code   328  adc.o(.text.ourADC_Init)
+    ourADC_Start                             0x08000a21   Thumb Code    38  adc.o(.text.ourADC_Start)
+    ourGPIO_Init                             0x08000a49   Thumb Code   382  gpio.o(.text.ourGPIO_Init)
+    Region$$Table$$Base                      0x08000bc8   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x08000bd8   Number         0  anon$$obj.o(Region$$Table)
     __libspace_start                         0x20000000   Data          96  libspace.o(.bss)
     PTF1                                     0x20000060   Data           4  timer.o(.bss.PTF1)
     __temporary_stack_top$libspace           0x20000060   Data           0  libspace.o(.bss)
@@ -539,9 +543,9 @@ Memory Map of the image
 
   Image Entry point : 0x08000199
 
-  Load Region LR_1 (Base: 0x08000000, Size: 0x00000a44, Max: 0xffffffff, ABSOLUTE)
+  Load Region LR_1 (Base: 0x08000000, Size: 0x00000bd8, Max: 0xffffffff, ABSOLUTE)
 
-    Execution Region ER_RO (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00000a44, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RO (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00000bd8, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -629,19 +633,22 @@ Memory Map of the image
     0x080007a4   0x080007a4   0x00000030   Code   RO           35    .text.__NVIC_EnableIRQ  timer.o
     0x080007d4   0x080007d4   0x00000042   Code   RO           37    .text.__NVIC_SetPriority  timer.o
     0x08000816   0x08000816   0x00000002   PAD
-    0x08000818   0x08000818   0x0000009a   Code   RO            4    .text.main          principal.o
-    0x080008b2   0x080008b2   0x00000002   PAD
-    0x080008b4   0x080008b4   0x0000017e   Code   RO           14    .text.ourGPIO_Init  gpio.o
-    0x08000a32   0x08000a32   0x00000002   PAD
-    0x08000a34   0x08000a34   0x00000010   Data   RO          266    Region$$Table       anon$$obj.o
+    0x08000818   0x08000818   0x000000be   Code   RO            4    .text.main          principal.o
+    0x080008d6   0x080008d6   0x00000002   PAD
+    0x080008d8   0x080008d8   0x00000148   Code   RO           62    .text.ourADC_Init   adc.o
+    0x08000a20   0x08000a20   0x00000026   Code   RO           64    .text.ourADC_Start  adc.o
+    0x08000a46   0x08000a46   0x00000002   PAD
+    0x08000a48   0x08000a48   0x0000017e   Code   RO           14    .text.ourGPIO_Init  gpio.o
+    0x08000bc6   0x08000bc6   0x00000002   PAD
+    0x08000bc8   0x08000bc8   0x00000010   Data   RO          266    Region$$Table       anon$$obj.o
 
 
-    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x08000a44, Size: 0x00000000, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x08000bd8, Size: 0x00000000, Max: 0xffffffff, ABSOLUTE)
 
     **** No section assigned to this execution region ****
 
 
-    Execution Region ER_ZI (Exec base: 0x20000000, Load base: 0x08000a44, Size: 0x00000670, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_ZI (Exec base: 0x20000000, Load base: 0x08000bd8, Size: 0x00000670, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -661,16 +668,17 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
+       366          0          0          0          0       1907   adc.o
        382          0          0          0          0       2115   gpio.o
-       172          0          0          0          0       2214   principal.o
+       208          0          0          0          0       2731   principal.o
         64         26        236          0       1536        836   startup_stm32f10x_md.o
        400          0          0          0          0       2960   system_stm32f10x.o
       1036          0          0          0         16       6034   timer.o
 
     ----------------------------------------------------------------------
-      2080         26        252          0       1552      14159   Object Totals
+      2484         26        252          0       1552      16583   Object Totals
          0          0         16          0          0          0   (incl. Generated)
-        26          0          0          0          0          0   (incl. Padding)
+        28          0          0          0          0          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -716,15 +724,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      2376         42        252          0       1648      14575   Grand Totals
-      2376         42        252          0       1648      14575   ELF Image Totals
-      2376         42        252          0          0          0   ROM Totals
+      2780         42        252          0       1648      16979   Grand Totals
+      2780         42        252          0       1648      16979   ELF Image Totals
+      2780         42        252          0          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 2628 (   2.57kB)
+    Total RO  Size (Code + RO Data)                 3032 (   2.96kB)
     Total RW  Size (RW Data + ZI Data)              1648 (   1.61kB)
-    Total ROM Size (Code + RO Data + RW Data)       2628 (   2.57kB)
+    Total ROM Size (Code + RO Data + RW Data)       3032 (   2.96kB)
 
 ==============================================================================
 

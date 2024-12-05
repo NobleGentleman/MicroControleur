@@ -1,6 +1,7 @@
 #include "stm32f10x.h"
 #include "../Drivers/GPIO.h"
 #include "../Drivers/TIMER.h"
+#include "../Drivers/ADC.h"
 #include "../Service/DEFINE.h"
 
 /*
@@ -108,6 +109,13 @@ int main ( void )
 	ourGPIO_Init(&mon_GPIO);
 	//ourGPIO_Set(&mon_GPIO,Pin_Timer_PWM);
 	//int test = ourGPIO_Read(&mon_GPIO,Pin_Timer_PWM);
+	
+	ourADC_struct mon_ADC;
+	mon_ADC.ADC = ADC_Test;
+	mon_ADC.ADC_channel = Channel_ADC_Test;
+	mon_ADC.ADC_conf = Conf_ADC_Test;
+	ourADC_Init(&mon_ADC);
+	ourADC_Start(&mon_ADC);
 	
 	while (1)
 	{

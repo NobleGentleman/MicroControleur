@@ -2,10 +2,10 @@
 
 void ourGPIO_Init( ourGPIO_struct * GPIOStructPtr){
 	
-	if(GPIOStructPtr->GPIO == GPIOA) RCC->APB2ENR |= (0x01 << 2);
-	if(GPIOStructPtr->GPIO == GPIOB) RCC->APB2ENR |= (0x01 << 3);
-	if(GPIOStructPtr->GPIO == GPIOC) RCC->APB2ENR |= (0x01 << 4);
-	if(GPIOStructPtr->GPIO == GPIOD) RCC->APB2ENR |= (0x01 << 5);
+	if(GPIOStructPtr->GPIO == GPIOA) RCC->APB2ENR |= RCC_APB2ENR_IOPAEN; // |= (0x01 << 2);
+	if(GPIOStructPtr->GPIO == GPIOB) RCC->APB2ENR |= RCC_APB2ENR_IOPBEN; // |= (0x01 << 3);
+	if(GPIOStructPtr->GPIO == GPIOC) RCC->APB2ENR |= RCC_APB2ENR_IOPCEN; // |= (0x01 << 4);
+	if(GPIOStructPtr->GPIO == GPIOD) RCC->APB2ENR |= RCC_APB2ENR_IOPDEN; // |= (0x01 << 5);
 	
 	char pin = GPIOStructPtr->GPIO_pin;
 	char conf = GPIOStructPtr->GPIO_conf;
