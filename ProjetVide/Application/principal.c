@@ -1,10 +1,9 @@
-#include "stm32f10x.h"
 #include "../Drivers/GPIO.h"
 #include "../Drivers/TIMER.h"
 #include "../Drivers/ADC.h"
+#include "../Drivers/UART.h"
 
-#include "../Services/TIMER_PWM.h"
-#include "../Services/ADC_TEST.h"
+#include "stm32f10x.h"
 
 /*
 
@@ -19,6 +18,9 @@ void Callback(void){
 		GPIOA->ODR ^= GPIO_ODR_ODR0;  // Le bit ODR0 est inversé
 	}
 
+int Rapport_Cyclique;
+uint16_t Valeur_ADC;
+	
 int main ( void )
 {
 	/*
@@ -30,7 +32,9 @@ int main ( void )
 	GPIOA->CRL &= ~(0xF<<4) ;
 	GPIOA->CRL |= (0x2<<4) ;
 	*/
-
+	
+	/* INTERRUPTION */
+	
 	/*
 	N-1 dans ARR
 	M-1 dans PSC
@@ -46,32 +50,30 @@ int main ( void )
 	Une solution possible : (N;M) = (1000;36000)
 	*/
 	
+	MyTimer_Struct_TypeDef IT_500ms;
+	IT_500ms.ARR = 1000-1;
+	IT_500ms.PSC = 36000-1;
 	
-	MyTimer_Struct_TypeDef Timer500ms_IT;
-	Timer500ms_IT.ARR = 1000-1;
-	Timer500ms_IT.PSC = 36000-1;
-	
-	Timer500ms_IT.Timer = TIM1;
-	MyTimer_Base_Init(&Timer500ms_IT);
-	MyTimer_Base_Start(TIM1);
-	MyTimer_ActiveIT(TIM1,2,Callback);
-	
-	/*
-	Timer500.Timer = TIM2;
-	MyTimer_Base_Init(&Timer500);
-	MyTimer_Base_Start(TIM2);
-	MyTimer_ActiveIT(TIM2,2,Callback);
-
-	Timer500.Timer = TIM3;
-	MyTimer_Base_Init(&Timer500);
+	IT_500ms.Timer = TIM3;
+	MyTimer_Base_Init(&IT_500ms);
 	MyTimer_Base_Start(TIM3);
 	MyTimer_ActiveIT(TIM3,2,Callback);
-
-	Timer500.Timer = TIM4;
-	MyTimer_Base_Init(&Timer500);
-	MyTimer_Base_Start(TIM4);
-	MyTimer_ActiveIT(TIM4,2,Callback);
-	*/
+		
+	/* ADC */
+	
+	ourADC_struct mon_ADC;
+	mon_ADC.ADC = ADC1;
+	mon_ADC.ADC_channel = 8;
+	mon_ADC.ADC_conf = c28cycles5;
+	ourADC_Init(&mon_ADC); // ADC 1 Channel 8 -> Broche PB0
+	
+	ourGPIO_struct GPIO_ADC;
+	GPIO_ADC.GPIO = GPIOB;
+	GPIO_ADC.GPIO_pin = 0; // Broche PB1
+	GPIO_ADC.GPIO_conf = in_Analog;
+	ourGPIO_Init(&GPIO_ADC);
+	
+	/* PWM */
 	
 	/*
 	N-1 dans ARR
@@ -84,42 +86,45 @@ int main ( void )
 	On a Frequence_PSC = 72e6 Hz
 	Donc Periode_PSC = 1/(72e6) s
 	
-	On veut Frequence_PWM = 100kHz
-	Donc Periode_PWM = 10 us
-	Donc N*M = 720
-	Une solution possible : (N;M) = (10;72)
+	On veut Frequence_PWM = 50 kHz
+	Donc Periode_PWM = 20 us
+	Donc N*M = 1440
+	Une solution possible : (N;M) = (10;144)
 	
 	Alpha = R/N
-	On a Alpha = 0,2
-	Donc R = 2	
+	On a Alpha = Consigne (exemple 0.1)
+	Donc R = Consigne*10 (exemple 1)
 	*/
 	
-	MyTimer_Struct_TypeDef Timer10us_PWM;
-	Timer10us_PWM.ARR = 10-1;
-	Timer10us_PWM.PSC = 72-1;
+	MyTimer_Struct_TypeDef Timer_PWM_50k;
+	Timer_PWM_50k.ARR = 10-1;
+	Timer_PWM_50k.PSC = 144-1;
 	
-	Timer10us_PWM.Timer = TIM2;
-	MyTimer_Base_Init(&Timer10us_PWM);
+	Timer_PWM_50k.Timer = TIM2;
+	MyTimer_Base_Init(&Timer_PWM_50k);
 	MyTimer_Base_Start(TIM2);
-	MyTimer_PWM_Init_Channel(TIM2,2);
-	MyTimer_PWM_Set_Rapport_Cyclique(TIM2,2,20);
+	MyTimer_PWM_Init_Channel(TIM2,2); // Timer 2 Channel 2 -> Broche PA1
 	
-	ourGPIO_struct mon_GPIO;
-	mon_GPIO.GPIO = GPIO_Timer_PWM;
-	mon_GPIO.GPIO_pin = Pin_Timer_PWM;
-	mon_GPIO.GPIO_conf = altOut_Ppull;
-	ourGPIO_Init(&mon_GPIO);
-	//ourGPIO_Set(&mon_GPIO,Pin_Timer_PWM);
-	//int test = ourGPIO_Read(&mon_GPIO,Pin_Timer_PWM);
+	ourGPIO_struct GPIO_PWM_50k;
+	GPIO_PWM_50k.GPIO = GPIOA;
+	GPIO_PWM_50k.GPIO_pin = 1; // Broche PA1
+	GPIO_PWM_50k.GPIO_conf = altOut_Ppull;
+	ourGPIO_Init(&GPIO_PWM_50k);
 	
-	ourADC_struct mon_ADC;
-	mon_ADC.ADC = ADC_Test;
-	mon_ADC.ADC_channel = Channel_ADC_Test;
-	mon_ADC.ADC_conf = Conf_ADC_Test;
-	ourADC_Init(&mon_ADC);
-	ourADC_Start(&mon_ADC);
-	
-	while (1)
-	{
+	while(1){
+		ourADC_Start(&mon_ADC);
+		Valeur_ADC = ourADC_Read(&mon_ADC);
+		if(0 <= Valeur_ADC && Valeur_ADC <= 81) Rapport_Cyclique = 2;
+		if(82 <= Valeur_ADC && Valeur_ADC <= 4013) Rapport_Cyclique = 100*Valeur_ADC/4095;
+		if(4014 <= Valeur_ADC && Valeur_ADC <= 4095) Rapport_Cyclique = 98;
+		MyTimer_PWM_Set_Rapport_Cyclique(TIM2,2,Rapport_Cyclique);
 	}
+	
+	/* UART */
+	/*
+	MyUART_Init(USART1,9600,72000000);
+	MyUART_ActiveIT(USART1,Callback);
+	MyUART_Transmit(USART1,'t');
+	*/
+	
 }

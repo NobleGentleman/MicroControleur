@@ -20,5 +20,6 @@ typedef struct{
 
 void ourADC_Init(ourADC_struct * ADCStructPtr);
 void ourADC_Start(ourADC_struct * ADCStructPtr);
+uint16_t ourADC_Read(ourADC_struct * ADCStructPtr);
 
 #endif

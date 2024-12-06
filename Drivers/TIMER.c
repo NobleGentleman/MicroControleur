@@ -40,8 +40,8 @@ void MyTimer_Base_Init(MyTimer_Struct_TypeDef * TimIN){
 	if(TimIN->Timer == TIM3) RCC->APB1ENR |= RCC_APB1ENR_TIM3EN;
 	if(TimIN->Timer == TIM4) RCC->APB1ENR |= RCC_APB1ENR_TIM4EN;
 	
-	TimIN->Timer->ARR |= TimIN->ARR;
-	TimIN->Timer->PSC |= TimIN->PSC;
+	TimIN->Timer->ARR = TimIN->ARR;
+	TimIN->Timer->PSC = TimIN->PSC;
 }
 
 void MyTimer_ActiveIT(TIM_TypeDef * Timer, char Prio, void ( * IT_function ) (void)){
@@ -137,9 +137,9 @@ void MyTimer_PWM_Init_Channel(TIM_TypeDef * Timer, char Channel){
 	}
 }
 
-void MyTimer_PWM_Set_Rapport_Cyclique(TIM_TypeDef * Timer, char Channel, int Rapport_Cyclique){
+void MyTimer_PWM_Set_Rapport_Cyclique(TIM_TypeDef * Timer, char Channel, double Rapport_Cyclique){
 	
-	int R = Rapport_Cyclique * (1+Timer->ARR) / 100;
+	double R = Rapport_Cyclique * (1+Timer->ARR) / 100;
 	
 	if (Channel == 1){
 		Timer->CCR1 = R;

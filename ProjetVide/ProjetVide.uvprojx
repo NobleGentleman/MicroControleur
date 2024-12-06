@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath></IncludePath>
+              <IncludePath>..\Drivers</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -413,21 +413,6 @@
               <FileName>UART.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\UART.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Services</GroupName>
-          <Files>
-            <File>
-              <FileName>ADC_TEST.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Services\ADC_TEST.h</FilePath>
-            </File>
-            <File>
-              <FileName>TIMER_PWM.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Services\TIMER_PWM.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -846,21 +831,6 @@
               <FileName>UART.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\UART.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Services</GroupName>
-          <Files>
-            <File>
-              <FileName>ADC_TEST.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Services\ADC_TEST.h</FilePath>
-            </File>
-            <File>
-              <FileName>TIMER_PWM.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Services\TIMER_PWM.h</FilePath>
             </File>
           </Files>
         </Group>

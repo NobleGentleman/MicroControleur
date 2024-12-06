@@ -59,3 +59,8 @@ void ourADC_Start(ourADC_struct * ADCStructPtr){
 	ADCStructPtr->ADC->CR2 |= ADC_CR2_SWSTART; // Commencement de la conversion analogique-numérique
 	while (!(ADCStructPtr->ADC->SR & ADC_SR_EOC)) {} // Attente de fin de conversion : exécution tant que le bit EOC n'est pas actif (que la conversion n'est pas terminée)
 }
+
+uint16_t ourADC_Read(ourADC_struct * ADCStructPtr){
+	uint16_t result = ADCStructPtr->ADC->DR;
+	return result;
+}
