@@ -47,32 +47,32 @@ int main ( void )
 	
 	On veut Periode_Timer = 500 ms
 	Donc N*M = 36e6
-	Une solution possible : (N;M) = (1000;36000)
+	Une solution possible : (N;M) = (36000;1000)
 	*/
 	
 	MyTimer_Struct_TypeDef IT_500ms;
-	IT_500ms.ARR = 1000-1;
-	IT_500ms.PSC = 36000-1;
+	IT_500ms.ARR = 36000-1;
+	IT_500ms.PSC = 1000-1;
 	
-	IT_500ms.Timer = TIM3;
+	IT_500ms.Timer = TIM4;
 	MyTimer_Base_Init(&IT_500ms);
-	MyTimer_Base_Start(TIM3);
-	MyTimer_ActiveIT(TIM3,2,Callback);
+	MyTimer_Base_Start(TIM4);
+	MyTimer_ActiveIT(TIM4,2,Callback);
 		
 	/* ADC */
 	
+	ourGPIO_struct GPIO_ADC;
+	GPIO_ADC.GPIO = GPIOB;
+	GPIO_ADC.GPIO_pin = 0; // Broche PB0
+	GPIO_ADC.GPIO_conf = in_Analog;
+	ourGPIO_Init(&GPIO_ADC);
+		
 	ourADC_struct mon_ADC;
 	mon_ADC.ADC = ADC1;
 	mon_ADC.ADC_channel = 8;
 	mon_ADC.ADC_conf = c28cycles5;
 	ourADC_Init(&mon_ADC); // ADC 1 Channel 8 -> Broche PB0
-	
-	ourGPIO_struct GPIO_ADC;
-	GPIO_ADC.GPIO = GPIOB;
-	GPIO_ADC.GPIO_pin = 0; // Broche PB1
-	GPIO_ADC.GPIO_conf = in_Analog;
-	ourGPIO_Init(&GPIO_ADC);
-	
+
 	/* PWM */
 	
 	/*
@@ -89,27 +89,44 @@ int main ( void )
 	On veut Frequence_PWM = 50 kHz
 	Donc Periode_PWM = 20 us
 	Donc N*M = 1440
-	Une solution possible : (N;M) = (10;144)
+	Une solution possible : (N;M) = (1440;1)
 	
 	Alpha = R/N
 	On a Alpha = Consigne (exemple 0.1)
 	Donc R = Consigne*10 (exemple 1)
 	*/
 	
+	ourGPIO_struct GPIO_PWM_50k;
+	GPIO_PWM_50k.GPIO = GPIOA;
+	GPIO_PWM_50k.GPIO_pin = 1; // Broche PA1
+	GPIO_PWM_50k.GPIO_conf = altOut_Ppull;
+	ourGPIO_Init(&GPIO_PWM_50k);
+	
 	MyTimer_Struct_TypeDef Timer_PWM_50k;
-	Timer_PWM_50k.ARR = 10-1;
-	Timer_PWM_50k.PSC = 144-1;
+	Timer_PWM_50k.ARR = 1440-1;
+	Timer_PWM_50k.PSC = 1-1;
 	
 	Timer_PWM_50k.Timer = TIM2;
 	MyTimer_Base_Init(&Timer_PWM_50k);
 	MyTimer_Base_Start(TIM2);
 	MyTimer_PWM_Init_Channel(TIM2,2); // Timer 2 Channel 2 -> Broche PA1
 	
-	ourGPIO_struct GPIO_PWM_50k;
-	GPIO_PWM_50k.GPIO = GPIOA;
-	GPIO_PWM_50k.GPIO_pin = 1; // Broche PA1
-	GPIO_PWM_50k.GPIO_conf = altOut_Ppull;
-	ourGPIO_Init(&GPIO_PWM_50k);
+	/*/*/
+		
+	ourGPIO_struct GPIO_PWM_50k_complementaire;
+	GPIO_PWM_50k_complementaire.GPIO = GPIOA;
+	GPIO_PWM_50k_complementaire.GPIO_pin = 6; // Broche PA6
+	GPIO_PWM_50k_complementaire.GPIO_conf = altOut_Ppull;
+	ourGPIO_Init(&GPIO_PWM_50k_complementaire);
+	
+	MyTimer_Struct_TypeDef Timer_PWM_50k_complementaire;
+	Timer_PWM_50k_complementaire.ARR = 1440-1;
+	Timer_PWM_50k_complementaire.PSC = 1-1;
+	
+	Timer_PWM_50k_complementaire.Timer = TIM3;
+	MyTimer_Base_Init(&Timer_PWM_50k_complementaire);
+	MyTimer_Base_Start(TIM3);
+	MyTimer_PWM_Init_Channel(TIM3,1); // Timer 3 Channel 1 -> Broche PA6
 	
 	while(1){
 		ourADC_Start(&mon_ADC);
@@ -118,6 +135,7 @@ int main ( void )
 		if(82 <= Valeur_ADC && Valeur_ADC <= 4013) Rapport_Cyclique = 100*Valeur_ADC/4095;
 		if(4014 <= Valeur_ADC && Valeur_ADC <= 4095) Rapport_Cyclique = 98;
 		MyTimer_PWM_Set_Rapport_Cyclique(TIM2,2,Rapport_Cyclique);
+		MyTimer_PWM_Set_Rapport_Cyclique(TIM3,1,100-Rapport_Cyclique);
 	}
 	
 	/* UART */
