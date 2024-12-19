@@ -8,8 +8,9 @@ void MyUART_Init(USART_TypeDef * UART, unsigned int debit, int frequence_horloge
 // Fréquence de l'horloge de l'UART : vitesse de fonctionnement de l'UART, nombre de cycles par seconde (en Hz)
 // Ici F = 72MHz
 
-void MyUART_Transmit(USART_TypeDef * UART, char data);
-char MyUART_Receive(USART_TypeDef * UART);
+void MyUART_SendChar(USART_TypeDef * UART, char c);
+void MyUART_SendString(USART_TypeDef * UART, char *str);
+char MyUART_Read(USART_TypeDef * UART);
 void MyUART_ActiveIT(USART_TypeDef * UART, void ( * IT_function ) (void));
 
 #endif

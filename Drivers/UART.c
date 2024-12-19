@@ -12,29 +12,39 @@ void MyUART_Init(USART_TypeDef * UART, unsigned int debit, int frequence_horloge
 	// 1. Configuration de l'UART à la bonne vitesse de transmission
 	UART->BRR = frequence_horloge / debit;
 	
-	// 2. Activation de l'UART
-	UART->CR1 |= USART_CR1_UE;
-	
-	// 3. Configuration de la transmission des données sur 8 bits
+	// 2. Configuration de la transmission des données sur 8 bits
 	UART->CR1 &= ~USART_CR1_M;
 	
-	// 4. Désactivation des bits d'arrêt
+	// 3. Désactivation des bits d'arrêt
 	UART->CR2 &= ~USART_CR2_STOP;
+	// Pour 2 bits d'arrêt, utiliser : UART->CR2 |= USART_CR2_STOP_1;
 	
-	// 5. Activation de la réception et de la transmission
+	// 4. Activation de la réception et de la transmission
 	UART->CR1 |= (USART_CR1_RE | USART_CR1_TE);
+	
+	// 5. Activation de l'UART
+	UART->CR1 |= USART_CR1_UE;
 }
 
-void MyUART_Transmit(USART_TypeDef * UART, char data){
+void MyUART_SendChar(USART_TypeDef * UART, char c){
 	while(!(UART->SR & USART_SR_TXE));
 	// On attend que le registre de transmission de l'UART soit vide avant d'envoyer un nouveau caractère
 	// Cela permet de ne pas écraser les données déjà présentes dans le registre de transmission
 	// <-> Synchronisation de l'envoi de données à travers l'UART
 	
-	UART->DR = data;
+	UART->DR = c;
 }
 
-char MyUART_Receive(USART_TypeDef * UART){
+void MyUART_SendString(USART_TypeDef * UART, char *str){
+	while (*str){
+		MyUART_SendChar(UART,*str++);
+	}
+}
+
+char MyUART_Read(USART_TypeDef * UART){
+	// Attendre que des données soient disponibles
+	while (!(UART->SR & USART_SR_RXNE));
+	// Lire les données reçues
 	return UART->DR;
 }
 

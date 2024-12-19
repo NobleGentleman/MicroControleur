@@ -5,7 +5,6 @@ void (*PTF2) (void);
 void (*PTF3) (void);
 void (*PTF4) (void);
 
-
 /*
 
 I - Connectivity line devices: reset and clock control (RCC)
