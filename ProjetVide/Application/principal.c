@@ -120,13 +120,13 @@ int main(void){
 	
 	/* UART */
 	
-	ourGPIO_struct GPIO_UART;
-	GPIO_UART.GPIO = GPIOB;
-	GPIO_UART.GPIO_pin = 6; // Broche PB6
-	GPIO_UART.GPIO_conf = altOut_Ppull;
-	ourGPIO_Init(&GPIO_UART);
+	ourGPIO_struct GPIO_UART_TX;
+	GPIO_UART_TX.GPIO = GPIOB;
+	GPIO_UART_TX.GPIO_pin = 6; // Broche PB6
+	GPIO_UART_TX.GPIO_conf = altOut_Ppull; // RX : in_Floating
+	ourGPIO_Init(&GPIO_UART_TX);
 	
-	MyUART_Init(USART1,9600,72000000);
+	MyUART_Init(USART1,9600,72000000); // USART1_TX -> Broche PB6
 	//MyUART_ActiveIT(USART1,Callback);
 	
 	/* INTERRUPTION */
@@ -153,7 +153,7 @@ int main(void){
 	IT_500ms.Timer = TIM4;
 	MyTimer_Base_Init(&IT_500ms);
 	MyTimer_Base_Start(TIM4);
-	MyTimer_ActiveIT(TIM4,2,Callback); // Timer 4 Channel 1 -> Broche PB6
+	MyTimer_ActiveIT(TIM4,1,Callback); // Timer 4 Channel 1 -> Broche PB6
 	
 	char Buffer1[7]; // Buffer pour la consigne
 	int Consigne;
