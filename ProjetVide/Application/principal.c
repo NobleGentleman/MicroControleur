@@ -121,13 +121,13 @@ int main(void){
 	/* UART */
 	
 	ourGPIO_struct GPIO_UART_TX;
-	GPIO_UART_TX.GPIO = GPIOB;
-	GPIO_UART_TX.GPIO_pin = 6; // Broche PB6
+	GPIO_UART_TX.GPIO = GPIOA;
+	GPIO_UART_TX.GPIO_pin = 2; // Broche PA2
 	GPIO_UART_TX.GPIO_conf = altOut_Ppull; // RX : in_Floating
 	ourGPIO_Init(&GPIO_UART_TX);
 	
-	MyUART_Init(USART1,9600,72000000); // USART1_TX -> Broche PB6
-	//MyUART_ActiveIT(USART1,Callback);
+	MyUART_Init(USART2,9600,72000000); // USART2_TX -> Broche PA2
+	//MyUART_ActiveIT(USART2,Callback);
 	
 	/* INTERRUPTION */
 	
@@ -173,7 +173,7 @@ int main(void){
 		if(UART_Flag == 1){
 			UART_Flag = 0;
 			
-			MyUART_SendString(USART1,"\nConsigne : ");
+			MyUART_SendString(USART2,"\nConsigne : ");
 			Consigne = 1000 * Valeur_ADC_en_Volts(Valeur_ADC);
 			Buffer1[6] = '\0';
 			Buffer1[5] = 'V';
@@ -187,10 +187,10 @@ int main(void){
 			Buffer1[0] = (Consigne % 10) + '0';
 			
 			for(int i=0;i<7;i++){
-				MyUART_SendChar(USART1,Buffer1[i]);
+				MyUART_SendChar(USART2,Buffer1[i]);
 			}
 			
-			MyUART_SendString(USART1,"\nPWM : ");
+			MyUART_SendString(USART2,"\nPWM : ");
 			Rapport_Cyclique_Auxi = Rapport_Cyclique;
 			Buffer2[3] = '\0';
 			Buffer2[2] = '%';
@@ -201,10 +201,10 @@ int main(void){
 			Buffer2[0] = (Rapport_Cyclique_Auxi % 10) + '0';
 			
 			for(int i=0;i<4;i++){
-				MyUART_SendChar(USART1,Buffer2[i]);
+				MyUART_SendChar(USART2,Buffer2[i]);
 			}
 			
-			MyUART_SendString(USART1,"\n");
+			MyUART_SendString(USART2,"\n");
 		}
 	}
 }
